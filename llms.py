@@ -30,3 +30,17 @@ def summarize_file_content(file_content):
     reply = response.choices[0].message.content
     return reply
 
+def file_explanation(file_content):
+    """Use Azure OpenAI to summarize the content of a specific file."""
+    prompt = f"Provide a concise, clear explanation of the following code file. Describe what each major block/function does and how the code works overall. Keep the explanation short but informative:\n\n{file_content}"
+    response = client.chat.completions.create(
+        model=deployment_name,
+        messages=[
+            {"role": "system", "content": "You are an expert software summarizer."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.5,
+        max_tokens=1500,
+    )
+    reply = response.choices[0].message.content
+    return reply
